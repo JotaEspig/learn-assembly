@@ -1,4 +1,6 @@
 
+; Prints hello world in the terminal
+
 section .data:
    message: db "Hello World!", 0x0a ; 0x0a means '\n'
    message_length: equ $-message ; $-message means: current location (message_length) - message
