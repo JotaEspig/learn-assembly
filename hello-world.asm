@@ -1,16 +1,20 @@
-section	.text
-   global _start     ;must be declared for linker (ld)
-	
-_start:	            ;tells linker entry point
-   mov	edx,len     ;message length
-   mov	ecx,msg     ;message to write
-   mov	ebx,1       ;file descriptor (stdout)
-   mov	eax,4       ;system call number (sys_write)
-   int	0x80        ;call kernel
-	
-   mov	eax,1       ;system call number (sys_exit)
-   int	0x80        ;call kernel
 
-section	.data
-msg db 'Hello, world!', 0xa  ;string to be printed
-len equ $ - msg     ;length of the string
+section .data:
+   message: db "Hello World!", 0x0a ; 0xa means '\n'
+   message_length: equ $-message ; $-message means: current location (message_length) - message
+
+section .text:
+   global _start
+
+_start:
+   ; Prints the message
+   mov eax, 0x4            ; using write syscall
+   mov ebx, 0x1            ; using stdout (1) as fd (file descriptor)
+   mov ecx, message        ; using message as the buffer
+   mov edx, message_length ; using message length
+   int 0x80                ; int = interrupt, 0x80 to run the syscall we defined as eax
+
+   ; Exits the program
+   mov eax, 0x1            ; using exit syscall 
+   mov ebx, 0              ; using 0 as return code
+   int 0x80
