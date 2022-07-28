@@ -1,7 +1,8 @@
 
 section .data:
-   message: db "Hello World!", 0x0a ; 0xa means '\n'
+   message: db "Hello World!", 0x0a ; 0x0a means '\n'
    message_length: equ $-message ; $-message means: current location (message_length) - message
+   ; this is pointer arithmetic
 
 section .text:
    global _start
@@ -12,7 +13,7 @@ _start:
    mov ebx, 0x1            ; using stdout (1) as fd (file descriptor)
    mov ecx, message        ; using message as the buffer
    mov edx, message_length ; using message length
-   int 0x80                ; int = interrupt, 0x80 to run the syscall we defined as eax
+   int 0x80                ; int = interrupt, 0x80 to run the syscall we defined in eax
 
    ; Exits the program
    mov eax, 0x1            ; using exit syscall 
